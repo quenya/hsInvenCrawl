@@ -6,7 +6,7 @@ import telegram_bot as tb
 
 
 interval_time = 10 * 60
-#
+
 
 def update_last_num(new_article_list):
     last_num = new_article_list[-1][0]
