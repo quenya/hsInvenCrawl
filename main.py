@@ -2,6 +2,7 @@ import selenium_util as su
 import file_io as fi
 import time
 import datetime
+import telegram_bot as tb
 
 
 interval_time = 10 * 60
@@ -17,6 +18,10 @@ def notify_new_article_list(new_article_list, now):
     print('[%s] %d articles added' % (now, len(new_article_list)))
     for num, title, href in new_article_list[::-1]:
         print('%d - %s: %s' % (num, title, href))
+    msg_list = []
+    for num, title, href in new_article_list[::-1]:
+        msg_list.append('%s: %s' % (title, href))
+    tb.send_message_list(msg_list)
 
 
 def get_new_article_list():
