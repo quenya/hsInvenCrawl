@@ -37,7 +37,7 @@ def get_new_article_list():
 def main_crawl_logic():
     new_article_list = get_new_article_list()
     now = datetime.datetime.now()
-    if len(new_article_list) is 0:
+    if len(new_article_list) == 0:
         print('[%s] no added article' % now)
         return
     notify_new_article_list(new_article_list, now)
