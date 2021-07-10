@@ -1,24 +1,50 @@
-from selenium import webdriver
+import selenium_util as su
+import file_io as fi
+import time
+import datetime
 
 
-def get_chrome_driver():
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')  # 웹 브라우저를 띄우지 않는 headless chrome 옵션 적용
-    options.add_argument('disable-gpu')  # GPU 사용 안함
-    options.add_argument('lang=ko_KR')  # 언어 설정
-    return webdriver.Chrome('chromedriver', options=options)  # 옵션 적용
+interval_time = 10 * 60
 
 
-# Press the green button in the gutter to run the script.
+def update_last_num(new_article_list):
+    last_num = new_article_list[-1][0]
+    print('last_number: %d' % last_num)
+    fi.write_last_num(last_num)
+
+
+def notify_new_article_list(new_article_list, now):
+    print('[%s] %d articles added' % (now, len(new_article_list)))
+    for num, title, href in new_article_list[::-1]:
+        print('%d - %s: %s' % (num, title, href))
+
+
+def get_new_article_list():
+    article_list = su.get_article_list()
+    last_num = fi.read_last_num()
+    new_article_list = []
+    for article in article_list:
+        num = int(su.get_name_of_class(article, 'bbsNo'))
+        if num <= last_num:
+            break
+        doc = su.get_class(article, 'sj_ln')
+        title = doc.text
+        href = doc.get_property('href')
+        new_article_list.append((num, title, href))
+    return new_article_list
+
+
+def main_crawl_logic():
+    new_article_list = get_new_article_list()
+    now = datetime.datetime.now()
+    if len(new_article_list) is 0:
+        print('[%s] no added article' % now)
+        return
+    notify_new_article_list(new_article_list, now)
+    update_last_num(new_article_list)
+
+
 if __name__ == '__main__':
-    driver = get_chrome_driver()
-    hs_inven_url = "https://www.inven.co.kr/board/hs/3508?come_idx=3508&category=유저"
-    driver.get(hs_inven_url)
-    doc_list = driver.find_elements_by_xpath("//tr[contains(@class, 'ls') and contains(@class, 'oh') and contains(@class, 'tr')]")
-    print(doc_list)
-    for doc in doc_list:
-        num = doc.find_element_by_class_name('bbsNo').text
-        article = doc.find_element_by_class_name('sj_ln')
-        title = article.text
-        href = article.get_property('href')
-        print('%s - %s: %s' % (num, title, href))
+    while True:
+        main_crawl_logic()
+        time.sleep(interval_time)
