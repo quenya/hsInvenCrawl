@@ -4,14 +4,17 @@ import datetime
 
 
 def send_email():
-    smtp = smtplib.SMTP('smtp.naver.com', 465)
-    smtp.ehlo()  # say Hello
+    smtp = smtplib.SMTP('smtp.gmail.com', 587)
     smtp.starttls()  # TLS 사용시 필요
-    addr = 'lee@live.com'
-    pw = '7ujm8i'
-    smtp.login(addr, pw)
+    id = 'quendya7@gamil.com'
+    pw = 'wcqqvwqdfncxzzik'
+    smtp.login(id, pw)
     msg = MIMEText('Hs inven crawler started')
     msg['Subject'] = '[%s] Hs inven crawler started' % datetime.datetime.now()
-    msg['To'] = addr
-    smtp.sendmail(addr, addr, msg.as_string())
+    email = 'qendya@naver.com'
+    msg['To'] = email
+    smtp.sendmail(id, email, msg.as_string())
     smtp.quit()
+
+
+send_email()
