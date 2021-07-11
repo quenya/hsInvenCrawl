@@ -3,6 +3,7 @@ import file_io as fi
 import time
 import datetime
 import telegram_bot as tb
+import email_util as eu
 
 
 interval_time = 10 * 60
@@ -50,6 +51,7 @@ def main_crawl_logic():
 
 
 if __name__ == '__main__':
+    eu.send_email()
     while True:
         main_crawl_logic()
         time.sleep(interval_time)
