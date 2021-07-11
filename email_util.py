@@ -18,6 +18,3 @@ def send_email():
         smtp.quit()
     finally:
         print('send mail was failed')
-
-
-send_email()
