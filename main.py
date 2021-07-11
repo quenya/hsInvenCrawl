@@ -51,7 +51,7 @@ def main_crawl_logic():
 
 
 if __name__ == '__main__':
-    eu.send_email()
+    # eu.send_email()
     while True:
         main_crawl_logic()
         time.sleep(interval_time)
