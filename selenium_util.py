@@ -18,7 +18,7 @@ def get_article_list():
     if driver is None:
         driver = get_chrome_driver()
     driver.get(hs_inven_url)
-    return driver.find_elements_by_xpath("//tr[contains(@class, 'ls') and contains(@class, 'oh') and contains(@class, 'tr')]")
+    return driver.find_elements_by_xpath("//tr[contains(@class, 'ls') and contains(@class, 'tr')]")
 
 
 def get_class(obj, name):
